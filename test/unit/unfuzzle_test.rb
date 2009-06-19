@@ -19,6 +19,21 @@ class UnfuzzleTest < Test::Unit::TestCase
       Unfuzzle.password.should == 'password'
     end
     
+    should "be able to retrieve a project by id" do
+      Unfuzzle::Project.expects(:find_by_id).with(1).returns('project')
+      Unfuzzle.project(1).should == 'project'
+    end
+    
+    should "be able to retrieve a project by slug" do
+      Unfuzzle::Project.expects(:find_by_slug).with('slug').returns('project')
+      Unfuzzle.project('slug').should == 'project'
+    end
+    
+    should "be able to retrieve a list of all projects for the current user" do
+      Unfuzzle::Project.expects(:all).with().returns('projects')
+      Unfuzzle.projects.should == 'projects'
+    end
+    
   end
   
 end

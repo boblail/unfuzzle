@@ -26,11 +26,19 @@ Once that is configured, you can start accessing data from the API.
 Pulling back a list of projects is simple.  Based on the currently logged-in
 user, you can see which ones he has access to:
 
-    projects = Unfuzzle::Project.all # => [#<Unfuzzle::Project:0x11e9280 ...> , ...]
+    projects = Unfuzzle.projects # => [#<Unfuzzle::Project:0x11e9280 ...> , ...]
     
+If you don't want all projects, you can find one by its slug (or short name):
+
+    Unfuzzle.project('salty') # => #<Unfuzzle::Project:0x11e9280 ...>
+    
+Or by ID:
+
+    Unfuzzle.project(1) # => #<Unfuzzle::Project:0x11e9280 ...>
+
 There are a few attributes available for a project:
 
-    project = projects.first
+    project = Unfuzzle.projects.first
     project.id                              # => 123
     project.slug                            # => "salty"
     project.name                            # => "Salty Co."

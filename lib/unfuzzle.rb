@@ -46,6 +46,16 @@ module Unfuzzle
   def self.password=(password)
     @password = password
   end
+  
+  # Retrieve a project for the current user by its ID or slug
+  def self.project(id_or_slug)
+    id_or_slug.is_a?(String) ? Project.find_by_slug(id_or_slug) : Project.find_by_id(id_or_slug)
+  end
+  
+  # Get a list of all projects for this user
+  def self.projects
+    Project.all
+  end
     
   def self.subdomain # :nodoc:
     @subdomain
