@@ -19,6 +19,27 @@ module Unfuzzle
         Project.all.should == elements
       end
 
+      should "be able to find a project by its slug" do
+        slug = 'blip'
+
+        response = mock_request_cycle :for => "/projects/by_short_name/#{slug}", :data => 'project'
+
+        Unfuzzle::Project.expects(:new).with(response.data).returns('project')
+
+        Project.find_by_slug(slug).should == 'project'
+      end
+
+      should "be able to find a project by its ID" do
+        id = 1
+
+        response = mock_request_cycle :for => "/projects/#{id}", :data => 'project'
+
+        Unfuzzle::Project.expects(:new).with(response.data).returns('project')
+
+        Project.find_by_id(id).should == 'project'
+      end
+
+
     end
 
     context "An instance of the Project class" do

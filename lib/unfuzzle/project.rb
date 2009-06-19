@@ -27,6 +27,18 @@ module Unfuzzle
       response.data.map {|data| new(data) }
     end
     
+    # Find a single project by its slug (short name)
+    def self.find_by_slug(slug)
+      response = Request.get("/projects/by_short_name/#{slug}")
+      new(response.data)
+    end
+
+    # Find a single project by its ID
+    def self.find_by_id(id)
+      response = Request.get("/projects/#{id}")
+      new(response.data)
+    end
+
     # Has this project been archived?
     def archived?
       archived == true
