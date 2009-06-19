@@ -41,9 +41,15 @@ module Unfuzzle
     def updated_at
       DateTime.parse(updated_timestamp)
     end
-    
+
+    # The collection of Milestones associated to this project
     def milestones
       Milestone.find_all_by_project_id(id)
+    end
+
+    # The collection of Tickets associated to this project
+    def tickets
+      Ticket.find_all_by_project_id(id)
     end
 
   end

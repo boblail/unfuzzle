@@ -28,6 +28,7 @@ module Unfuzzle
       when_populating Milestone, :from => 'milestones' do
 
         value_for :id,                :is => 1
+        value_for :project_id,        :is => 1
         value_for :archived,          :is => false
         value_for :created_timestamp, :is => '2008-07-30T22:12:37Z'
         value_for :name,              :is => 'Milestone 1'
@@ -36,45 +37,58 @@ module Unfuzzle
 
       end
 
-      should "know that it is archived" do
-        milestone = Milestone.new(stub())
-        milestone.stubs(:archived).with().returns(true)
+      context "with a new instance" do
 
-        milestone.archived?.should be(true)
-      end
+        setup { @milestone = Milestone.new(stub()) }
 
-      should "know that it isn't archived" do
-        milestone = Milestone.new(stub())
-        milestone.stubs(:archived).with().returns(false)
+        should "know that it is archived" do
+          @milestone.stubs(:archived).with().returns(true)
+          @milestone.archived?.should be(true)
+        end
 
-        milestone.archived?.should be(false)
-      end
+        should "know that it isn't archived" do
+          @milestone.stubs(:archived).with().returns(false)
+          @milestone.archived?.should be(false)
+        end
 
-      should "have a create date/time" do
-        milestone = Milestone.new(stub())
-        milestone.stubs(:created_timestamp).with().returns('2008-07-28T16:57:10Z')
+        should "have a create date/time" do
+          DateTime.expects(:parse).with('2008-07-28T16:57:10Z').returns('create_date')
 
-        DateTime.expects(:parse).with('2008-07-28T16:57:10Z').returns('create_date')
+          @milestone.stubs(:created_timestamp).with().returns('2008-07-28T16:57:10Z')
+          @milestone.created_at.should == 'create_date'
+        end
 
-        milestone.created_at.should == 'create_date'
-      end
+        should "have an update date/time" do
+          DateTime.expects(:parse).with('2009-04-28T18:48:52Z').returns('update_date')
 
-      should "have an update date/time" do
-        milestone = Milestone.new(stub())
-        milestone.stubs(:updated_timestamp).with().returns('2009-04-28T18:48:52Z')
+          @milestone.stubs(:updated_timestamp).with().returns('2009-04-28T18:48:52Z')
+          @milestone.updated_at.should == 'update_date'
+        end
 
-        DateTime.expects(:parse).with('2009-04-28T18:48:52Z').returns('update_date')
+        should "have a due date" do
+          Date.expects(:parse).with('2008-07-30').returns('due_date')
 
-        milestone.updated_at.should == 'update_date'
-      end
+          @milestone.stubs(:due_datestamp).with().returns('2008-07-30')
+          @milestone.due_on.should == 'due_date'
+        end
 
-      should "have a due date" do
-        milestone = Milestone.new(stub())
-        milestone.stubs(:due_datestamp).with().returns('2008-07-30')
+        should "not have a due date if there isn't one associated" do
+          @milestone.stubs(:due_datestamp).with().returns(nil)
+          @milestone.due_on.should be(nil)
+        end
 
-        Date.expects(:parse).with('2008-07-30').returns('due_date')
+        should "have associated tickets" do
+          id         = 1
+          project_id = 1
 
-        milestone.due_on.should == 'due_date'
+          Ticket.expects(:find_all_by_project_id_and_milestone_id).with(project_id, id).returns('tickets')
+
+          @milestone.stubs(:id).with().returns(id)
+          @milestone.stubs(:project_id).with().returns(project_id)
+
+          @milestone.tickets.should == 'tickets'
+        end
+
       end
 
     end
