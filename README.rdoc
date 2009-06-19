@@ -27,10 +27,10 @@ Pulling back a list of projects is simple.  Based on the currently logged-in
 user, you can see which ones he has access to:
 
     projects = Unfuzzle::Project.all # => [#<Unfuzzle::Project:0x11e9280 ...> , ...]
-    project = projects.first
     
 There are a few attributes available for a project:
 
+    project = projects.first
     project.id                              # => 123
     project.slug                            # => "salty"
     project.name                            # => "Salty Co."
@@ -38,7 +38,42 @@ There are a few attributes available for a project:
     project.created_at.strftime('%Y-%m-%d') # => "2008-07-28"
     
 To see a list of additional attributes, take a look at the documentation for
-Unfuzzle::Project.
+Project.
+
+=== Milestones
+
+Each project can have milestones.  You can access these from a single project:
+
+    project.milestones # => [#<Unfuzzle::Milestone:0x10bdca8 ...>, ...]
+
+Milestones have attributes:
+
+    milestone = project.milestones.first
+    milestone.id                          # => 1
+    milestone.name                        # => "Milestone #1"
+    milestone.due_on.strftime('%m/%d/%Y') # => "07/30/2008"
+
+A full list is available in the Milestone documentation.
+
+=== Tickets
+
+Tickets exist for a project:
+
+    ticket = project.tickets.first
+    ticket.title        # => "Ticket #23"
+    ticket.number       # => 23
+    ticket.description  # => "Yo dawg, I hear you like tickets in your project ..."
+    ticket.status       # => "closed"
+
+And can also be associated to a milestone for the project:
+
+    ticket = project.milestones.first.tickets.first
+    ticket.title        # => "Ticket #1"
+    ticket.number       # => 1
+    ticket.description  # => "Wash my car"
+    ticket.status       # => "closed"
+
+See the Ticket documentation for more information.
 
 == License
 
