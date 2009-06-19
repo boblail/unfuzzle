@@ -6,7 +6,9 @@ require 'json'
 
 require 'unfuzzle/request'
 require 'unfuzzle/response'
+require 'unfuzzle/model'
 require 'unfuzzle/project'
+require 'unfuzzle/milestone'
 
 # = Unfuzzle: A simple wrapper around the Unfuddle JSON API
 #

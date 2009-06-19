@@ -11,15 +11,7 @@ module Unfuzzle
   #
   class Project
     
-    def self.attribute(name, options = {}) # :nodoc:
-      key = options.delete(:from) || name
-      
-      class_eval %(
-        def #{name}
-          @response_data['#{key}']
-        end
-      )
-    end
+    include Unfuzzle::Model
     
     attribute :id
     attribute :slug, :from => :short_name
@@ -33,11 +25,6 @@ module Unfuzzle
     def self.all
       response = Request.get('/projects')
       response.parse.map {|data| Project.new(data) }
-    end
-    
-    # Create a new project from JSON response data
-    def initialize(response_data)
-      @response_data = response_data
     end
     
     # Has this project been archived?
@@ -55,5 +42,9 @@ module Unfuzzle
       DateTime.parse(updated_timestamp)
     end
     
+    def milestones
+      Milestone.find_all_by_project_id(id)
+    end
+
   end
 end

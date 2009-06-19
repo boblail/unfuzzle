@@ -6,16 +6,13 @@ module Unfuzzle
     context "The Project class" do
       
       should "be able to return a list of all projects" do
-        data = read_fixture('projects')
-        response = stub(:parse => data)
-        
-        Unfuzzle::Request.expects(:get).with('/projects').returns(response)
+        response = mock_request_cycle :for => '/projects', :data => 'projects'
         
         elements = Array.new
         
-        data.each do |node|
+        response.parse.each do |data|
           element = stub()
-          Unfuzzle::Project.expects(:new).with(node).returns(element)
+          Unfuzzle::Project.expects(:new).with(data).returns(element)
           elements << element
         end
         
@@ -70,6 +67,16 @@ module Unfuzzle
         project.updated_at.should == 'update_date'
       end
       
+      should "have a list of associated milestones" do
+        id = 1
+        project = Project.new(stub())
+        project.stubs(:id).with().returns(id)
+
+        Milestone.expects(:find_all_by_project_id).with(id).returns('milestones')
+
+        project.milestones.should == 'milestones'
+      end
+
     end
     
   end

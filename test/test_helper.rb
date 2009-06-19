@@ -18,6 +18,18 @@ class Test::Unit::TestCase
     self.class.read_fixture(method_name)
   end
   
+  def mock_request_cycle(options)
+    response = Unfuzzle::Response.new(stub())
+
+    data = read_fixture(options[:data])
+
+    response.stubs(:parse).with().returns(data)
+
+    Unfuzzle::Request.stubs(:get).with(options[:for]).returns(response)
+
+    response
+  end
+
   def self.when_populating(klass, options, &block)
     # data = options[:from].is_a?(String) ? read_fixture(options[:from])[0] : options[:from].call
 
