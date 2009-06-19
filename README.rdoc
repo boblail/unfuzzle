@@ -1,0 +1,66 @@
+= Unfuzzle
+
+== Description
+
+The Unfuzzle gem provides an interface to the Unfuddle JSON API
+
+== Installation
+
+    sudo gem install vigetlabs-unfuzzle --source=http://gems.github.com
+
+== Usage
+
+To get started, you'll need your Unfuddle subdomain and a valid username / 
+password combination:
+
+    require 'unfuzzle'
+    
+    Unfuzzle.subdomain = 'viget'
+    Unfuzzle.username  = 'bopbip'
+    Unfuzzle.password  = 'bleep'
+    
+Once that is configured, you can start accessing data from the API.
+
+=== Projects
+
+Pulling back a list of projects is simple.  Based on the currently logged-in
+user, you can see which ones he has access to:
+
+    projects = Unfuzzle::Project.all # => [#<Unfuzzle::Project:0x11e9280 ...> , ...]
+    project = projects.first
+    
+There are a few attributes available for a project:
+
+    project.id                              # => 123
+    project.slug                            # => "salty"
+    project.name                            # => "Salty Co."
+    project.archived?                       # => false
+    project.created_at.strftime('%Y-%m-%d') # => "2008-07-28"
+    
+To see a list of additional attributes, take a look at the documentation for
+Unfuzzle::Project.
+
+== License
+
+Copyright (c) 2009 Patrick Reagan of Viget Labs (mailto:patrick.reagan@viget.com)
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
