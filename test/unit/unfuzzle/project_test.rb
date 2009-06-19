@@ -10,7 +10,7 @@ module Unfuzzle
         
         elements = Array.new
         
-        response.parse.each do |data|
+        response.data.each do |data|
           element = stub()
           Unfuzzle::Project.expects(:new).with(data).returns(element)
           elements << element

@@ -22,7 +22,7 @@ module Unfuzzle
     end
     
     # Parsed JSON response body
-    def parse
+    def data
       if !error?
         @parsed_data ||= JSON.parse(body)
       end

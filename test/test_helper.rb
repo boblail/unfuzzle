@@ -23,7 +23,7 @@ class Test::Unit::TestCase
 
     data = read_fixture(options[:data])
 
-    response.stubs(:parse).with().returns(data)
+    response.stubs(:data).with().returns(data)
 
     Unfuzzle::Request.stubs(:get).with(options[:for]).returns(response)
 

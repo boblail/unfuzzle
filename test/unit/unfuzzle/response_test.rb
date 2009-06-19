@@ -38,7 +38,7 @@ module Unfuzzle
                 
         JSON.expects(:parse).with('json').returns('data')
         
-        response.parse.should == 'data'
+        response.data.should == 'data'
       end
       
       should "cache the parsed data from the response" do
@@ -48,14 +48,14 @@ module Unfuzzle
         
         JSON.stubs(:parse).with('json').once.returns('data')
         
-        2.times { response.parse }
+        2.times { response.data }
       end
       
       should "return nil when parsing data if there are errors in the response" do
         response = Unfuzzle::Response.new(stub())
         response.expects(:error?).with().returns(true)
         
-        response.parse.should be(nil)
+        response.data.should be(nil)
         
       end
       

@@ -24,7 +24,7 @@ module Unfuzzle
     # Return a list of all projects to which the current user has access
     def self.all
       response = Request.get('/projects')
-      response.parse.map {|data| Project.new(data) }
+      response.data.map {|data| Project.new(data) }
     end
     
     # Has this project been archived?

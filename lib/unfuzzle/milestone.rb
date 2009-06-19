@@ -12,7 +12,7 @@ module Unfuzzle
 
     def self.find_all_by_project_id(project_id)
       response = Request.get("/projects/#{project_id}/milestones")
-      response.parse.map {|data| new(data) }
+      response.data.map {|data| new(data) }
     end
 
     def archived?

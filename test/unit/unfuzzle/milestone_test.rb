@@ -12,7 +12,7 @@ module Unfuzzle
 
         milestones = Array.new
 
-        response.parse.each do |data|
+        response.data.each do |data|
           milestone = stub()
           Unfuzzle::Milestone.expects(:new).with(data).returns(milestone)
           milestones << milestone
