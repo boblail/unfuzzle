@@ -16,6 +16,7 @@ module Unfuzzle
     include Unfuzzle::Model
 
     attribute :id
+    attribute :project_id
     attribute :number
     attribute :title, :from => :summary
     attribute :description
@@ -49,6 +50,11 @@ module Unfuzzle
     # The Date that this milestone is due
     def due_on
       Date.parse(due_datestamp) unless due_datestamp.nil?
+    end
+    
+    def update
+      resource_path = "/projects/#{project_id}/tickets/#{id}"
+      Request.put(resource_path, self.to_xml)
     end
 
   end

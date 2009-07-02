@@ -12,13 +12,24 @@ module Unfuzzle
       request.get
     end
     
+    def self.put(resource_path, payload)
+      request = new(resource_path, payload, :format => :xml)
+      request.put
+    end
+    
     # Create a new request for the given resource path
-    def initialize(resource_path)
+    def initialize(resource_path, payload = nil, options = {})
       @resource_path = resource_path
+      @payload       = payload
+      @options       = options
+    end
+    
+    def request_format
+      (@options[:format] || 'json').to_s
     end
     
     def endpoint_uri  # :nodoc:
-      URI.parse("http://#{Unfuzzle.subdomain}.unfuddle.com/api/v1#{@resource_path}.json")
+      URI.parse("http://#{Unfuzzle.subdomain}.unfuddle.com/api/v1#{@resource_path}.#{request_format}")
     end
 
     def client # :nodoc:
@@ -31,6 +42,14 @@ module Unfuzzle
       request.basic_auth Unfuzzle.username, Unfuzzle.password
       
       Response.new(client.request(request))
+    end
+
+    def put
+      request = Net::HTTP::Put.new(endpoint_uri.path)
+      request.basic_auth Unfuzzle.username, Unfuzzle.password
+      request.content_type = 'application/xml'
+      
+      Response.new(client.request(request, @payload))
     end
     
   end

@@ -45,6 +45,7 @@ module Unfuzzle
       when_populating Ticket, :from => 'tickets' do
 
         value_for :id,                :is => 1
+        value_for :project_id,        :is => 1
         value_for :created_timestamp, :is => '2008-11-25T14:00:19Z'
         value_for :updated_timestamp, :is => '2008-12-31T15:51:41Z'
         value_for :number,            :is => 1
@@ -59,7 +60,7 @@ module Unfuzzle
       should_set_a_value_for :description
       
       context "with a new instance" do
-        setup { @ticket = Ticket.new(stub()) }
+        setup { @ticket = Ticket.new({}) }
 
         should "have a create date/time" do
           DateTime.expects(:parse).with('2008-07-28T16:57:10Z').returns('create_date')
@@ -85,6 +86,20 @@ module Unfuzzle
         should "not have a due date if there isn't one associated" do
           @ticket.stubs(:due_datestamp).with().returns(nil)
           @ticket.due_on.should be(nil)
+        end
+        
+        should "be able to perform an update" do
+          @ticket.stubs(:project_id).with().returns(1)
+          @ticket.stubs(:id).with().returns(2)
+          
+          resource_path = '/projects/1/tickets/2'
+          ticket_xml    = '<ticket />'
+          
+          @ticket.stubs(:to_xml).with().returns(ticket_xml)
+          
+          Unfuzzle::Request.expects(:put).with(resource_path, ticket_xml).returns('response')
+          
+          @ticket.update.should == 'response'
         end
 
       end
