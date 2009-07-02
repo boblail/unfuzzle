@@ -54,7 +54,10 @@ module Unfuzzle
         value_for :status,            :is => 'closed'
 
       end
-
+      
+      should_set_a_value_for :title
+      should_set_a_value_for :description
+      
       context "with a new instance" do
         setup { @ticket = Ticket.new(stub()) }
 

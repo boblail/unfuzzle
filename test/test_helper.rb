@@ -46,4 +46,17 @@ class Test::Unit::TestCase
     end
   end
   
+  def self.should_set_a_value_for(attribute, value = nil)
+    class_name = self.to_s.sub(/^Unfuzzle::(.*)Test$/, '\\1')
+    klass = Unfuzzle.const_get(class_name)
+    
+    value = attribute if value.nil?
+    
+    should "be able to set a value for :#{attribute}" do
+      object = klass.new({})
+      object.send("#{attribute}=", value)
+      object.send(attribute).should == value
+    end      
+  end
+  
 end
