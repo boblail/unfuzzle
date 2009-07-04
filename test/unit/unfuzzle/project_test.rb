@@ -99,7 +99,7 @@ module Unfuzzle
           @project.stubs(:id).with().returns(id)
           @project.tickets.should == 'tickets'
         end
-
+        
       end
     end
 

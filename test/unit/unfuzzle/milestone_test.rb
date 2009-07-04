@@ -20,6 +20,16 @@ module Unfuzzle
 
         Milestone.find_all_by_project_id(1).should == milestones
       end
+      
+      should "be able to find one by project ID an milestone ID" do
+        project_id    = 1
+        milestone_id  = 2
+        response = mock_request_cycle :for => "/projects/#{project_id}/milestones/#{milestone_id}", :data => 'milestone'
+        
+        Unfuzzle::Milestone.expects(:new).with(response.data).returns('milestone')
+        
+        Milestone.find_by_project_id_and_milestone_id(1, 2).should == 'milestone'
+      end
 
     end
 

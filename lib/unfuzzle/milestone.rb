@@ -25,6 +25,11 @@ module Unfuzzle
       response.data.map {|data| new(data) }
     end
 
+    def self.find_by_project_id_and_milestone_id(project_id, milestone_id)
+      response = Request.get("/projects/#{project_id}/milestones/#{milestone_id}")
+      new response.data
+    end
+
     # Has this milestone been archived?
     def archived?
       archived == true

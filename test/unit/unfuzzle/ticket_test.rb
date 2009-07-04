@@ -46,6 +46,7 @@ module Unfuzzle
 
         value_for :id,                :is => 1
         value_for :project_id,        :is => 1
+        value_for :milestone_id,      :is => 1
         value_for :created_timestamp, :is => '2008-11-25T14:00:19Z'
         value_for :updated_timestamp, :is => '2008-12-31T15:51:41Z'
         value_for :number,            :is => 1
@@ -86,6 +87,15 @@ module Unfuzzle
         should "not have a due date if there isn't one associated" do
           @ticket.stubs(:due_datestamp).with().returns(nil)
           @ticket.due_on.should be(nil)
+        end
+        
+        should "have an associated milestone" do
+          Milestone.expects(:find_by_project_id_and_milestone_id).with(1, 2).returns('milestone')
+          
+          @ticket.stubs(:project_id).with().returns(1)
+          @ticket.stubs(:milestone_id).with().returns(2)
+          
+          @ticket.milestone.should == 'milestone'
         end
         
         should "be able to perform an update" do

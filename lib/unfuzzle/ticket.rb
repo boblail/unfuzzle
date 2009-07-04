@@ -17,6 +17,7 @@ module Unfuzzle
 
     attribute :id
     attribute :project_id
+    attribute :milestone_id
     attribute :number
     attribute :title, :from => :summary
     attribute :description
@@ -50,6 +51,10 @@ module Unfuzzle
     # The Date that this milestone is due
     def due_on
       Date.parse(due_datestamp) unless due_datestamp.nil?
+    end
+   
+    def milestone
+      Milestone.find_by_project_id_and_milestone_id(project_id, milestone_id)
     end
     
     def update
