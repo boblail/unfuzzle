@@ -98,6 +98,31 @@ module Unfuzzle
 
           @milestone.tickets.should == 'tickets'
         end
+        
+        should "know that it's in the past if the due date is in the past" do
+          due_date = Date.today
+          today    = due_date.next
+          
+          @milestone.stubs(:due_on).with().returns(due_date)
+          Date.expects(:today).with().returns(today)
+          
+          @milestone.past?.should be(true)
+        end
+        
+        should "know that it's not in the past if the date is today" do
+          due_date = Date.today
+          @milestone.stubs(:due_on).with().returns(due_date)
+          
+          @milestone.past?.should be(false)
+        end
+        
+        should "know that it's not in the past if the due date is in the future" do
+          due_date = Date.today.next
+          @milestone.stubs(:due_on).with().returns(due_date)
+          
+          @milestone.past?.should be(false)
+        end
+        
 
       end
 

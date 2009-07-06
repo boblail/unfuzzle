@@ -50,6 +50,10 @@ module Unfuzzle
       Date.parse(due_datestamp) unless due_datestamp.nil?
     end
 
+    def past?
+      due_on < Date.today
+    end
+
     # The collection of Tickets associated to this milestone
     def tickets
       Ticket.find_all_by_project_id_and_milestone_id(project_id, id)
