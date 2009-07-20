@@ -35,12 +35,12 @@ module Unfuzzle
         value_for :id,                :is => 1
         value_for :project_id,        :is => 1
         value_for :milestone_id,      :is => 1
-        value_for :created_timestamp, :is => '2008-11-25T14:00:19Z'
-        value_for :updated_timestamp, :is => '2008-12-31T15:51:41Z'
+        value_for :created_at,        :is => Time.parse('2008-11-25T14:00:19Z')
+        value_for :updated_at,        :is => Time.parse('2008-12-31T15:51:41Z')
         value_for :number,            :is => '1'
         value_for :title,             :is => 'Ticket #1'
         value_for :description,       :is => 'Do something important'
-        value_for :due_datestamp,     :is => nil
+        value_for :due_on,            :is => nil
         value_for :status,            :is => 'closed'
 
       end
@@ -51,30 +51,11 @@ module Unfuzzle
       context "with a new instance" do
         setup { @ticket = Ticket.new }
 
-        should "have a create date/time" do
-          DateTime.expects(:parse).with('2008-07-28T16:57:10Z').returns('create_date')
-
-          @ticket.stubs(:created_timestamp).with().returns('2008-07-28T16:57:10Z')
-          @ticket.created_at.should == 'create_date'
-        end
-
-        should "have an update date/time" do
-          DateTime.expects(:parse).with('2009-04-28T18:48:52Z').returns('update_date')
-
-          @ticket.stubs(:updated_timestamp).with().returns('2009-04-28T18:48:52Z')
-          @ticket.updated_at.should == 'update_date'
-        end
-
         should "have a due date" do
-          Date.expects(:parse).with('2008-07-30').returns('due_date')
-
-          @ticket.stubs(:due_datestamp).with().returns('2008-07-30')
-          @ticket.due_on.should == 'due_date'
-        end
-
-        should "not have a due date if there isn't one associated" do
-          @ticket.stubs(:due_datestamp).with().returns(nil)
-          @ticket.due_on.should be(nil)
+          xml = '<ticket><due-on>2009-08-01</due-on></ticket>'
+          
+          ticket = Ticket.new(xml)
+          ticket.due_on.should == Date.parse('2009-08-01')
         end
         
         should "have an associated milestone" do

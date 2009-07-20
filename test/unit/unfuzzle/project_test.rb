@@ -40,13 +40,13 @@ module Unfuzzle
 
       when_populating Project, :from => 'project' do
       
-        value_for :id,                :is => 1
-        value_for :archived,          :is => false
-        value_for :slug,              :is => 'blip'
-        value_for :name,              :is => 'Blip Bleep Co.'
-        value_for :description,       :is => 'This is the project for Blip Bleep Co.'
-        value_for :created_timestamp, :is => '2008-07-28T16:57:10Z'
-        value_for :updated_timestamp, :is => '2009-04-28T18:48:52Z'
+        value_for :id,          :is => 1
+        value_for :archived,    :is => false
+        value_for :slug,        :is => 'blip'
+        value_for :name,        :is => 'Blip Bleep Co.'
+        value_for :description, :is => 'This is the project for Blip Bleep Co.'
+        value_for :created_at,  :is => Time.parse('2008-07-28T16:57:10Z')
+        value_for :updated_at,  :is => Time.parse('2009-04-28T18:48:52Z')
       
       end
 
@@ -62,20 +62,6 @@ module Unfuzzle
         should "know that it's not archived" do
           @project.stubs(:archived).with().returns(false)
           @project.archived?.should be(false)
-        end
-
-        should "have a create date" do
-          DateTime.expects(:parse).with('2008-07-28T16:57:10Z').returns('create_date')
-
-          @project.stubs(:created_timestamp).with().returns('2008-07-28T16:57:10Z')
-          @project.created_at.should == 'create_date'
-        end
-
-        should "have an update date" do
-          DateTime.expects(:parse).with('2009-04-28T18:48:52Z').returns('update_date')
-
-          @project.stubs(:updated_timestamp).with().returns('2009-04-28T18:48:52Z')
-          @project.updated_at.should == 'update_date'
         end
 
         should "have a list of associated milestones" do

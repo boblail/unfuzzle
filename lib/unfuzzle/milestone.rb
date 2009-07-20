@@ -15,9 +15,9 @@ module Unfuzzle
     attribute :project_id, :from => 'project-id', :type => :integer
     attribute :archived, :type => :boolean
     attribute :name, :from => 'title'
-    attribute :created_timestamp, :from => 'created-at'
-    attribute :updated_timestamp, :from => 'updated-at'
-    attribute :due_datestamp, :from => 'due-on'
+    attribute :created_at, :from => 'created-at', :type => :time
+    attribute :updated_at, :from => 'updated-at', :type => :time
+    attribute :due_on, :from => 'due-on', :type => :date
 
     # Return a list of all milestones for a given project
     def self.find_all_by_project_id(project_id)
@@ -33,21 +33,6 @@ module Unfuzzle
     # Has this milestone been archived?
     def archived?
       archived == true
-    end
-
-    # The DateTime that this milestone was created
-    def created_at
-      DateTime.parse(created_timestamp)
-    end
-
-    # The DateTime that this milestone was last updated
-    def updated_at
-      DateTime.parse(updated_timestamp)
-    end
-
-    # The Date that this milestone is due
-    def due_on
-      Date.parse(due_datestamp) unless due_datestamp.nil?
     end
 
     def past?

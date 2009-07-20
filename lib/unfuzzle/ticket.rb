@@ -21,9 +21,9 @@ module Unfuzzle
     attribute :number
     attribute :title, :from => 'summary'
     attribute :description
-    attribute :due_datestamp, :from => 'due-on'
-    attribute :created_timestamp, :from => 'created-at'
-    attribute :updated_timestamp, :from => 'updated-at'
+    attribute :due_on, :from => 'due-on', :type => :date
+    attribute :created_at, :from => 'created-at', :type => :time
+    attribute :updated_at, :from => 'updated-at', :type => :time
     attribute :status
 
     # Return a list of all tickets for an individual project
@@ -38,21 +38,6 @@ module Unfuzzle
       collection_from(response.body, 'tickets/ticket')
     end
 
-    # The DateTime that this milestone was created
-    def created_at
-      DateTime.parse(created_timestamp)
-    end
-
-    # The DateTime that this milestone was last updated
-    def updated_at
-      DateTime.parse(updated_timestamp)
-    end
-
-    # The Date that this milestone is due
-    def due_on
-      Date.parse(due_datestamp) unless due_datestamp.nil?
-    end
-   
     def milestone
       Milestone.find_by_project_id_and_milestone_id(project_id, milestone_id)
     end
