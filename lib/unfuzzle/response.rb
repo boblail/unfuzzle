@@ -21,12 +21,5 @@ module Unfuzzle
       @http_response.body
     end
     
-    # Parsed JSON response body
-    def data
-      if !error?
-        @parsed_data ||= JSON.parse(body)
-      end
-    end
-    
   end
 end

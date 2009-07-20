@@ -13,29 +13,29 @@ module Unfuzzle
   #
   class Ticket
 
-    include Unfuzzle::Model
+    include Graft::Model
 
-    attribute :id
-    attribute :project_id
-    attribute :milestone_id
+    attribute :id, :type => :integer
+    attribute :project_id, :from => 'project-id', :type => :integer
+    attribute :milestone_id, :from => 'milestone-id', :type => :integer
     attribute :number
-    attribute :title, :from => :summary
+    attribute :title, :from => 'summary'
     attribute :description
-    attribute :due_datestamp, :from => :due_on
-    attribute :created_timestamp, :from => :created_at
-    attribute :updated_timestamp, :from => :updated_at
+    attribute :due_datestamp, :from => 'due-on'
+    attribute :created_timestamp, :from => 'created-at'
+    attribute :updated_timestamp, :from => 'updated-at'
     attribute :status
 
     # Return a list of all tickets for an individual project
     def self.find_all_by_project_id(project_id)
       response = Request.get("/projects/#{project_id}/tickets")
-      response.data.map {|data| new(data) }
+      collection_from(response.body, 'tickets/ticket')
     end
 
     # Return a list of all tickets for a given milestone as part of a project
     def self.find_all_by_project_id_and_milestone_id(project_id, milestone_id)
       response = Request.get("/projects/#{project_id}/milestones/#{milestone_id}/tickets")
-      response.data.map {|data| new(data) }
+      collection_from(response.body, 'tickets/ticket')
     end
 
     # The DateTime that this milestone was created
@@ -57,9 +57,21 @@ module Unfuzzle
       Milestone.find_by_project_id_and_milestone_id(project_id, milestone_id)
     end
     
+    def to_hash
+      {
+        'id'           => id,
+        'project_id'   => project_id,
+        'milestone_id' => milestone_id,
+        'number'       => number,
+        'summary'      => title,
+        'description'  => description,
+        'status'       => status
+      }
+    end
+    
     def update
       resource_path = "/projects/#{project_id}/tickets/#{id}"
-      Request.put(resource_path, self.to_xml)
+      Request.put(resource_path, self.to_xml('ticket'))
     end
 
   end

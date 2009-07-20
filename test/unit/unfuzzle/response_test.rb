@@ -31,34 +31,6 @@ module Unfuzzle
         response.error?.should be(true)
       end
       
-      should "be able to parse the response" do
-        response = Unfuzzle::Response.new(stub())
-        response.expects(:body).with().returns('json')
-        response.stubs(:error?).with().returns(false)
-                
-        JSON.expects(:parse).with('json').returns('data')
-        
-        response.data.should == 'data'
-      end
-      
-      should "cache the parsed data from the response" do
-        response = Unfuzzle::Response.new(stub())
-        response.stubs(:body).with().returns('json')
-        response.stubs(:error?).with().returns(false)
-        
-        JSON.stubs(:parse).with('json').once.returns('data')
-        
-        2.times { response.data }
-      end
-      
-      should "return nil when parsing data if there are errors in the response" do
-        response = Unfuzzle::Response.new(stub())
-        response.expects(:error?).with().returns(true)
-        
-        response.data.should be(nil)
-        
-      end
-      
     end
     
   end

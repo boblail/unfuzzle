@@ -12,13 +12,13 @@ spec = Gem::Specification.new do |s|
   s.has_rdoc         = true
   s.extra_rdoc_files = %w(README.rdoc)
   s.rdoc_options     = %w(--main README.rdoc)
-  s.summary          = "This gem provides an interface to the Unfuddle JSON API"
+  s.summary          = "This gem provides an interface to the Unfuddle XML API"
   s.author           = 'Patrick Reagan'
   s.email            = 'patrick.reagan@viget.com'
   s.homepage         = 'http://www.viget.com/extend'
   s.files            = %w(README.rdoc Rakefile) + Dir.glob("{lib,test}/**/*")
   
-  s.add_dependency('json', '>= 1.1.6')
+  s.add_dependency('reagent-graft', '>= 0.1.1')
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|

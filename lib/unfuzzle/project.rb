@@ -11,32 +11,32 @@ module Unfuzzle
   #
   class Project
     
-    include Unfuzzle::Model
+    include Graft::Model
     
-    attribute :id
-    attribute :slug, :from => :short_name
-    attribute :archived
-    attribute :name, :from => :title
+    attribute :id, :type => :integer
+    attribute :slug, :from => 'short-name'
+    attribute :archived, :type => :boolean
+    attribute :name, :from => 'title'
     attribute :description
-    attribute :created_timestamp, :from => :created_at
-    attribute :updated_timestamp, :from => :updated_at
+    attribute :created_timestamp, :from => 'created-at'
+    attribute :updated_timestamp, :from => 'updated-at'
 
     # Return a list of all projects to which the current user has access
     def self.all
       response = Request.get('/projects')
-      response.data.map {|data| new(data) }
+      collection_from(response.body, 'projects/project')
     end
     
     # Find a single project by its slug (short name)
     def self.find_by_slug(slug)
       response = Request.get("/projects/by_short_name/#{slug}")
-      new(response.data)
+      new(response.body)
     end
 
     # Find a single project by its ID
     def self.find_by_id(id)
       response = Request.get("/projects/#{id}")
-      new(response.data)
+      new(response.body)
     end
 
     # Has this project been archived?

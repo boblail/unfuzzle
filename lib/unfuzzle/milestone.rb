@@ -9,25 +9,25 @@ module Unfuzzle
   #
   class Milestone
 
-    include Unfuzzle::Model
+    include Graft::Model
 
-    attribute :id
-    attribute :project_id
-    attribute :archived
-    attribute :name, :from => :title
-    attribute :created_timestamp, :from => :created_at
-    attribute :updated_timestamp, :from => :updated_at
-    attribute :due_datestamp, :from => :due_on
+    attribute :id, :type => :integer
+    attribute :project_id, :from => 'project-id', :type => :integer
+    attribute :archived, :type => :boolean
+    attribute :name, :from => 'title'
+    attribute :created_timestamp, :from => 'created-at'
+    attribute :updated_timestamp, :from => 'updated-at'
+    attribute :due_datestamp, :from => 'due-on'
 
     # Return a list of all milestones for a given project
     def self.find_all_by_project_id(project_id)
       response = Request.get("/projects/#{project_id}/milestones")
-      response.data.map {|data| new(data) }
+      collection_from(response.body, 'milestones/milestone')
     end
 
     def self.find_by_project_id_and_milestone_id(project_id, milestone_id)
       response = Request.get("/projects/#{project_id}/milestones/#{milestone_id}")
-      new response.data
+      new response.body
     end
 
     # Has this milestone been archived?

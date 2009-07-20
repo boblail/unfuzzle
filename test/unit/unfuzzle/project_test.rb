@@ -7,16 +7,10 @@ module Unfuzzle
 
       should "be able to return a list of all projects" do
         response = mock_request_cycle :for => '/projects', :data => 'projects'
-
-        elements = Array.new
-
-        response.data.each do |data|
-          element = stub()
-          Unfuzzle::Project.expects(:new).with(data).returns(element)
-          elements << element
-        end
-
-        Project.all.should == elements
+      
+        Unfuzzle::Project.expects(:collection_from).with(response.body, 'projects/project').returns(['project_1', 'project_2'])
+      
+        Project.all.should == ['project_1', 'project_2']
       end
 
       should "be able to find a project by its slug" do
@@ -24,7 +18,7 @@ module Unfuzzle
 
         response = mock_request_cycle :for => "/projects/by_short_name/#{slug}", :data => 'project'
 
-        Unfuzzle::Project.expects(:new).with(response.data).returns('project')
+        Unfuzzle::Project.expects(:new).with(response.body).returns('project')
 
         Project.find_by_slug(slug).should == 'project'
       end
@@ -34,7 +28,7 @@ module Unfuzzle
 
         response = mock_request_cycle :for => "/projects/#{id}", :data => 'project'
 
-        Unfuzzle::Project.expects(:new).with(response.data).returns('project')
+        Unfuzzle::Project.expects(:new).with(response.body).returns('project')
 
         Project.find_by_id(id).should == 'project'
       end
@@ -44,21 +38,21 @@ module Unfuzzle
 
     context "An instance of the Project class" do
 
-      when_populating Project, :from => 'projects' do
-
+      when_populating Project, :from => 'project' do
+      
         value_for :id,                :is => 1
         value_for :archived,          :is => false
-        value_for :slug,              :is => 'aa'
-        value_for :name,              :is => 'A Client'
-        value_for :description,       :is => 'A great project'
+        value_for :slug,              :is => 'blip'
+        value_for :name,              :is => 'Blip Bleep Co.'
+        value_for :description,       :is => 'This is the project for Blip Bleep Co.'
         value_for :created_timestamp, :is => '2008-07-28T16:57:10Z'
         value_for :updated_timestamp, :is => '2009-04-28T18:48:52Z'
-
+      
       end
 
       context "with a new instance" do
 
-        setup { @project = Project.new(stub()) }
+        setup { @project = Project.new }
 
         should "know that it's archived" do
           @project.stubs(:archived).with().returns(true)

@@ -10,8 +10,8 @@ require File.dirname(__FILE__) + '/../lib/unfuzzle'
 class Test::Unit::TestCase
   
   def self.read_fixture(method_name)
-    file = File.dirname(__FILE__) + "/fixtures/#{method_name}.json"
-    JSON.parse(File.read(file))
+    file = File.dirname(__FILE__) + "/fixtures/#{method_name}.xml"
+    File.read(file)
   end
 
   def read_fixture(method_name)
@@ -23,7 +23,7 @@ class Test::Unit::TestCase
 
     data = read_fixture(options[:data])
 
-    response.stubs(:data).with().returns(data)
+    response.stubs(:body).with().returns(data)
 
     Unfuzzle::Request.stubs(:get).with(options[:for]).returns(response)
 
@@ -31,10 +31,8 @@ class Test::Unit::TestCase
   end
 
   def self.when_populating(klass, options, &block)
-    # data = options[:from].is_a?(String) ? read_fixture(options[:from])[0] : options[:from].call
-
     context "with data populated for #{klass}" do
-      setup { @object = klass.new(read_fixture(options[:from])[0]) }
+      setup { @object = klass.new(read_fixture(options[:from])) }
       merge_block(&block)
     end
 
@@ -53,7 +51,7 @@ class Test::Unit::TestCase
     value = attribute if value.nil?
     
     should "be able to set a value for :#{attribute}" do
-      object = klass.new({})
+      object = klass.new
       object.send("#{attribute}=", value)
       object.send(attribute).should == value
     end      

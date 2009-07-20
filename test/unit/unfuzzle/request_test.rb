@@ -14,7 +14,7 @@ module Unfuzzle
       
       should "be able to perform a PUT request" do
         request = mock() {|r| r.expects(:put).with().returns('response') }
-        Unfuzzle::Request.expects(:new).with('/projects', '<payload>', :format => :xml).returns(request)
+        Unfuzzle::Request.expects(:new).with('/projects', '<payload>').returns(request)
         
         Unfuzzle::Request.put('/projects', '<payload>').should == 'response'
       end
@@ -23,27 +23,17 @@ module Unfuzzle
     
     context "An instance of the Request class" do
 
-      should "default the data format to JSON" do
-        request = Unfuzzle::Request.new('/projects')
-        request.request_format.should == 'json'
-      end
-
-      should "be able to override the request data format" do
-        request = Unfuzzle::Request.new('/projects', nil, :format => :xml)
-        request.request_format.should == 'xml'
-      end
-      
       should "have an endpoint URI" do
         Unfuzzle.stubs(:subdomain).with().returns('viget')
         
         request = Unfuzzle::Request.new('/projects')
-        request.endpoint_uri.should == URI.parse('http://viget.unfuddle.com/api/v1/projects.json')
+        request.endpoint_uri.should == URI.parse('http://viget.unfuddle.com/api/v1/projects.xml')
       end
       
       should "have an endpoint URI with the appropriate format when specified" do
         Unfuzzle.stubs(:subdomain).with().returns('viget')
         
-        request = Unfuzzle::Request.new('/projects', nil, :format => :xml)
+        request = Unfuzzle::Request.new('/projects', nil)
         request.endpoint_uri.should == URI.parse('http://viget.unfuddle.com/api/v1/projects.xml')
       end
       

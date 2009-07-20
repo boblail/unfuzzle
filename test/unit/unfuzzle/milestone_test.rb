@@ -10,15 +10,9 @@ module Unfuzzle
 
         response = mock_request_cycle :for => "/projects/#{project_id}/milestones", :data => 'milestones'
 
-        milestones = Array.new
+        Unfuzzle::Milestone.expects(:collection_from).with(response.body, 'milestones/milestone').returns(['milestone_1', 'milestone_2'])
 
-        response.data.each do |data|
-          milestone = stub()
-          Unfuzzle::Milestone.expects(:new).with(data).returns(milestone)
-          milestones << milestone
-        end
-
-        Milestone.find_all_by_project_id(1).should == milestones
+        Milestone.find_all_by_project_id(project_id).should == ['milestone_1', 'milestone_2']
       end
       
       should "be able to find one by project ID an milestone ID" do
@@ -26,7 +20,7 @@ module Unfuzzle
         milestone_id  = 2
         response = mock_request_cycle :for => "/projects/#{project_id}/milestones/#{milestone_id}", :data => 'milestone'
         
-        Unfuzzle::Milestone.expects(:new).with(response.data).returns('milestone')
+        Unfuzzle::Milestone.expects(:new).with(response.body).returns('milestone')
         
         Milestone.find_by_project_id_and_milestone_id(1, 2).should == 'milestone'
       end
@@ -35,21 +29,21 @@ module Unfuzzle
 
     context "An instance of the Milestone class" do
 
-      when_populating Milestone, :from => 'milestones' do
+      when_populating Milestone, :from => 'milestone' do
 
-        value_for :id,                :is => 1
+        value_for :id,                :is => 2
         value_for :project_id,        :is => 1
         value_for :archived,          :is => false
-        value_for :created_timestamp, :is => '2008-07-30T22:12:37Z'
-        value_for :name,              :is => 'Milestone 1'
-        value_for :due_datestamp,     :is => '2008-07-30'
-        value_for :updated_timestamp, :is => '2008-12-26T22:32:03Z'
+        value_for :created_timestamp, :is => '2009-04-02T19:43:16Z'
+        value_for :name,              :is => 'Milestone #1'
+        value_for :due_datestamp,     :is => '2009-04-03'
+        value_for :updated_timestamp, :is => '2009-07-02T16:40:28Z'
 
       end
 
       context "with a new instance" do
 
-        setup { @milestone = Milestone.new(stub()) }
+        setup { @milestone = Milestone.new }
 
         should "know that it is archived" do
           @milestone.stubs(:archived).with().returns(true)
