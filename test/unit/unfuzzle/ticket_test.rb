@@ -82,9 +82,19 @@ module Unfuzzle
           @ticket.severity.should == 'severity'
         end
         
+        should "have no associated severity if it is not set" do
+          @ticket.stubs(:severity_id).with().returns(nil)
+          @ticket.severity.should be(nil)
+        end
+        
         should "have a severity_name" do
           @ticket.stubs(:severity).with().returns(stub(:name => 'Story'))
           @ticket.severity_name.should == 'Story'
+        end
+        
+        should "have no severity_name if there is no severity" do
+          @ticket.stubs(:severity).with().returns(nil)
+          @ticket.severity_name.should be(nil)
         end
         
         should "have an associated priority" do
@@ -110,10 +120,20 @@ module Unfuzzle
           
           @ticket.component.should == 'component'
         end
+
+        should "have no associated component if it is not set" do
+          @ticket.stubs(:component_id).with().returns(nil)
+          @ticket.component.should be(nil)
+        end
         
         should "have a component_name" do
           @ticket.stubs(:component).with().returns(stub(:name => 'Admin'))
           @ticket.component_name.should == 'Admin'
+        end
+        
+        should "have no component_name if there is no component" do
+          @ticket.stubs(:component).with().returns(nil)
+          @ticket.component_name.should be(nil)
         end
         
         should "be able to generate a hash representation of itself for updating" do

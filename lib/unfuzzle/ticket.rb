@@ -51,11 +51,11 @@ module Unfuzzle
     
     # The Severity associated with this ticket
     def severity
-      Severity.find_by_project_id_and_severity_id(project_id, severity_id)
+      Severity.find_by_project_id_and_severity_id(project_id, severity_id) unless severity_id.nil?
     end
     
     def severity_name
-      severity.name
+      severity.name unless severity.nil?
     end
     
     # The Priority associated with this ticket
@@ -69,11 +69,11 @@ module Unfuzzle
     
     # The Component associated with this ticket
     def component
-      Component.find_by_project_id_and_component_id(project_id, component_id)
+      Component.find_by_project_id_and_component_id(project_id, component_id) unless component_id.nil?
     end
     
     def component_name
-      component.name
+      component.name unless component.nil?
     end
     
     # Hash representation of this ticket's data (for updating)
