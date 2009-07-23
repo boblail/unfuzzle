@@ -36,6 +36,7 @@ module Unfuzzle
         value_for :project_id,        :is => 1
         value_for :milestone_id,      :is => 1
         value_for :severity_id,       :is => 123
+        value_for :priority_id,       :is => 3
         value_for :created_at,        :is => Time.parse('2008-11-25T14:00:19Z')
         value_for :updated_at,        :is => Time.parse('2008-12-31T15:51:41Z')
         value_for :number,            :is => '1'
@@ -78,6 +79,13 @@ module Unfuzzle
           @ticket.stubs(:severity_id).with().returns(severity_id)
           
           @ticket.severity.should == 'severity'
+        end
+        
+        should "have an associated priority" do
+          Priority.expects(:new).with(1).returns('priority')
+          
+          @ticket.stubs(:priority_id).with().returns(1)
+          @ticket.priority.should == 'priority'
         end
         
         should "be able to generate a hash representation of itself for updating" do

@@ -18,6 +18,7 @@ module Unfuzzle
     attribute :id, :type => :integer
     attribute :project_id, :from => 'project-id', :type => :integer
     attribute :milestone_id, :from => 'milestone-id', :type => :integer
+    attribute :priority_id, :from => 'priority', :type => :integer
     attribute :number
     attribute :title, :from => 'summary'
     attribute :description
@@ -45,6 +46,10 @@ module Unfuzzle
     
     def severity
       Severity.find_by_project_id_and_severity_id(project_id, severity_id)
+    end
+    
+    def priority
+      Priority.new(priority_id)
     end
     
     def to_hash
