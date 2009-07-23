@@ -37,6 +37,7 @@ module Unfuzzle
         value_for :milestone_id,      :is => 1
         value_for :severity_id,       :is => 123
         value_for :priority_id,       :is => 3
+        value_for :component_id,      :is => 1
         value_for :created_at,        :is => Time.parse('2008-11-25T14:00:19Z')
         value_for :updated_at,        :is => Time.parse('2008-12-31T15:51:41Z')
         value_for :number,            :is => '1'
@@ -96,6 +97,23 @@ module Unfuzzle
         should "have a priority_name" do
           @ticket.stubs(:priority).with().returns(stub(:name => 'High'))
           @ticket.priority_name.should == 'High'
+        end
+        
+        should "have an associated component" do
+          project_id  = 1
+          component_id = 1
+
+          Component.expects(:find_by_project_id_and_component_id).with(project_id, component_id).returns('component')
+          
+          @ticket.stubs(:project_id).with().returns(project_id)
+          @ticket.stubs(:component_id).with().returns(component_id)
+          
+          @ticket.component.should == 'component'
+        end
+        
+        should "have a component_name" do
+          @ticket.stubs(:component).with().returns(stub(:name => 'Admin'))
+          @ticket.component_name.should == 'Admin'
         end
         
         should "be able to generate a hash representation of itself for updating" do

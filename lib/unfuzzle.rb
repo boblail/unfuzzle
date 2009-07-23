@@ -13,6 +13,7 @@ require 'unfuzzle/milestone'
 require 'unfuzzle/ticket'
 require 'unfuzzle/severity'
 require 'unfuzzle/priority'
+require 'unfuzzle/component'
 
 # = Unfuzzle: A simple wrapper around the Unfuddle JSON API
 #

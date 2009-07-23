@@ -18,6 +18,7 @@ module Unfuzzle
     attribute :id, :type => :integer
     attribute :project_id, :from => 'project-id', :type => :integer
     attribute :milestone_id, :from => 'milestone-id', :type => :integer
+    attribute :component_id, :from => 'component-id', :type => :integer
     attribute :priority_id, :from => 'priority', :type => :integer
     attribute :number
     attribute :title, :from => 'summary'
@@ -58,6 +59,14 @@ module Unfuzzle
     
     def priority_name
       priority.name
+    end
+    
+    def component
+      Component.find_by_project_id_and_component_id(project_id, component_id)
+    end
+    
+    def component_name
+      component.name
     end
     
     def to_hash
