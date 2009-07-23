@@ -18,7 +18,7 @@ spec = Gem::Specification.new do |s|
   s.homepage         = 'http://www.viget.com/extend'
   s.files            = %w(README.rdoc Rakefile) + Dir.glob("{lib,test}/**/*")
   
-  s.add_dependency('reagent-graft', '>= 0.1.1')
+  s.add_dependency('graft', '>= 0.1.1')
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
