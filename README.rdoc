@@ -2,7 +2,7 @@
 
 == Description
 
-The Unfuzzle gem provides an interface to the Unfuddle JSON API
+The Unfuzzle gem provides an interface to the Unfuddle XML API
 
 == Installation
 
@@ -81,7 +81,27 @@ And can also be associated to a milestone for the project:
     ticket.description  # => "Wash my car"
     ticket.status       # => "closed"
 
+Unfuddle has additional associations for a ticket, including component, severity,
+and priority:
+
+    ticket.component      # => #<Unfuzzle::Component:0x12c5b54 ...>
+    ticket.component_name # => "User Accounts"
+    ticket.severity       # => #<Unfuzzle::Severity:0x12a357c ...>
+    ticket.severity_name  # => "Development"
+    ticket.priority       # => #<Unfuzzle::Priority:0x12811fc @id=3>
+    ticket.priority_name  # => "Normal"
+
 See the Ticket documentation for more information.
+
+== Updating
+
+Currently, only ticket updating is supported and only for a subset of the data:
+
+    ticket.title = 'This is a new title' # => "This is a new title"
+    ticket.update                        # => #<Unfuzzle::Response:0x1275280 ...>
+
+This will update the title of the ticket.  Other fields that can be updated include
+description and status. 
 
 == License
 

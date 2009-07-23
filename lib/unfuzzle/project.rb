@@ -8,6 +8,9 @@ module Unfuzzle
   # [slug] The "short name" for this project
   # [name] The name of this project
   # [description] The description for the project
+  # [archived] The archived status of this project (see Project#archived?)
+  # [created_at] The date/time that this project was created
+  # [updated_at] The date/time that this project was last updated
   #
   class Project
     

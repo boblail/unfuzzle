@@ -6,7 +6,11 @@ module Unfuzzle
   #
   # [id] Unique identifier for this milestone
   # [name] Name of the milestone
-  #
+  # [archived] The archived status of this milestone (see Milestone#archived?)
+  # [due_on] The due date for this milestone
+  # [created_at] The date/time that this milestone was created
+  # [updated_at] The date/time that this milestone was last updated
+  # 
   class Milestone
 
     include Graft::Model
@@ -25,6 +29,7 @@ module Unfuzzle
       collection_from(response.body, 'milestones/milestone')
     end
 
+    # Find a milestone by ID for a given project
     def self.find_by_project_id_and_milestone_id(project_id, milestone_id)
       response = Request.get("/projects/#{project_id}/milestones/#{milestone_id}")
       new response.body
@@ -35,6 +40,7 @@ module Unfuzzle
       archived == true
     end
 
+    # Does this milestone occur in the past?
     def past?
       due_on < Date.today
     end

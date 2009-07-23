@@ -31,7 +31,15 @@ require 'unfuzzle/component'
 # 
 # From there, you can start accessing a list of projects:
 #
-#    Project.all
+#   >> Unfuzzle.projects
+#   => [#<Unfuzzle::Project:0x5f5c44 @id=1, @name="BlipCo", ...>, ... ]
+#
+# Or a specific project by its 'short name':
+#
+#   >> Unfuzzle.project('sample')
+#   => #<Unfuzzle::Project:0x123f888 @id=2, @name="Sample Project", ... >
+#
+# For more usage documentation, see README.doc.
 #
 module Unfuzzle
   

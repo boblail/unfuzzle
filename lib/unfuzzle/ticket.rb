@@ -10,6 +10,9 @@ module Unfuzzle
   # [title] The title of the ticket (short)
   # [description] The full description of the ticket
   # [status] The ticket's status (new / accepted / resolved / closed)
+  # [due_on] The due date for this ticket
+  # [created_at] The date/time that this ticket was created
+  # [updated_at] The date/time that this ticket was last updated
   #
   class Ticket
 
@@ -41,10 +44,12 @@ module Unfuzzle
       collection_from(response.body, 'tickets/ticket')
     end
 
+    # The Milestone associated with this ticket
     def milestone
       Milestone.find_by_project_id_and_milestone_id(project_id, milestone_id)
     end
     
+    # The Severity associated with this ticket
     def severity
       Severity.find_by_project_id_and_severity_id(project_id, severity_id)
     end
@@ -53,6 +58,7 @@ module Unfuzzle
       severity.name
     end
     
+    # The Priority associated with this ticket
     def priority
       Priority.new(priority_id)
     end
@@ -61,6 +67,7 @@ module Unfuzzle
       priority.name
     end
     
+    # The Component associated with this ticket
     def component
       Component.find_by_project_id_and_component_id(project_id, component_id)
     end
@@ -69,6 +76,7 @@ module Unfuzzle
       component.name
     end
     
+    # Hash representation of this ticket's data (for updating)
     def to_hash
       {
         'id'           => id,
@@ -81,6 +89,7 @@ module Unfuzzle
       }
     end
     
+    # Update the ticket's data in unfuddle
     def update
       resource_path = "/projects/#{project_id}/tickets/#{id}"
       Request.put(resource_path, self.to_xml('ticket'))
