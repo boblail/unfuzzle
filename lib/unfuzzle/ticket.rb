@@ -24,6 +24,7 @@ module Unfuzzle
     attribute :due_on, :from => 'due-on', :type => :date
     attribute :created_at, :from => 'created-at', :type => :time
     attribute :updated_at, :from => 'updated-at', :type => :time
+    attribute :severity_id, :from => 'severity-id', :type => :integer
     attribute :status
 
     # Return a list of all tickets for an individual project
@@ -40,6 +41,10 @@ module Unfuzzle
 
     def milestone
       Milestone.find_by_project_id_and_milestone_id(project_id, milestone_id)
+    end
+    
+    def severity
+      Severity.find_by_project_id_and_severity_id(project_id, severity_id)
     end
     
     def to_hash

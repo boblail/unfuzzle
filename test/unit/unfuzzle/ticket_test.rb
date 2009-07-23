@@ -35,6 +35,7 @@ module Unfuzzle
         value_for :id,                :is => 1
         value_for :project_id,        :is => 1
         value_for :milestone_id,      :is => 1
+        value_for :severity_id,       :is => 123
         value_for :created_at,        :is => Time.parse('2008-11-25T14:00:19Z')
         value_for :updated_at,        :is => Time.parse('2008-12-31T15:51:41Z')
         value_for :number,            :is => '1'
@@ -65,6 +66,18 @@ module Unfuzzle
           @ticket.stubs(:milestone_id).with().returns(2)
           
           @ticket.milestone.should == 'milestone'
+        end
+        
+        should "have an associated severity" do
+          project_id  = 1
+          severity_id = 1
+
+          Severity.expects(:find_by_project_id_and_severity_id).with(project_id, severity_id).returns('severity')
+          
+          @ticket.stubs(:project_id).with().returns(project_id)
+          @ticket.stubs(:severity_id).with().returns(severity_id)
+          
+          @ticket.severity.should == 'severity'
         end
         
         should "be able to generate a hash representation of itself for updating" do
