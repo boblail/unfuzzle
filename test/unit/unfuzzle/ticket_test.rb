@@ -81,11 +81,21 @@ module Unfuzzle
           @ticket.severity.should == 'severity'
         end
         
+        should "have a severity_name" do
+          @ticket.stubs(:severity).with().returns(stub(:name => 'Story'))
+          @ticket.severity_name.should == 'Story'
+        end
+        
         should "have an associated priority" do
           Priority.expects(:new).with(1).returns('priority')
           
           @ticket.stubs(:priority_id).with().returns(1)
           @ticket.priority.should == 'priority'
+        end
+        
+        should "have a priority_name" do
+          @ticket.stubs(:priority).with().returns(stub(:name => 'High'))
+          @ticket.priority_name.should == 'High'
         end
         
         should "be able to generate a hash representation of itself for updating" do

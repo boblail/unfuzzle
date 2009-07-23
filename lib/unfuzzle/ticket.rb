@@ -48,8 +48,16 @@ module Unfuzzle
       Severity.find_by_project_id_and_severity_id(project_id, severity_id)
     end
     
+    def severity_name
+      severity.name
+    end
+    
     def priority
       Priority.new(priority_id)
+    end
+    
+    def priority_name
+      priority.name
     end
     
     def to_hash
