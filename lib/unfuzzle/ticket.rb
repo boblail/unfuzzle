@@ -16,13 +16,13 @@ module Unfuzzle
   #
   class Ticket
 
-    include Graft::Model
+    include Graft
 
     attribute :id, :type => :integer
     attribute :project_id, :from => 'project-id', :type => :integer
     attribute :milestone_id, :from => 'milestone-id', :type => :integer
     attribute :component_id, :from => 'component-id', :type => :integer
-    attribute :priority_id, :from => 'priority', :type => :integer
+    attribute :priority, :type => :integer
     attribute :number
     attribute :title, :from => 'summary'
     attribute :description
@@ -31,6 +31,12 @@ module Unfuzzle
     attribute :updated_at, :from => 'updated-at', :type => :time
     attribute :severity_id, :from => 'severity-id', :type => :integer
     attribute :status
+    
+    def initialize(*args)
+      super(*args)
+      self.priority = 3
+      self.status = "new"
+    end
 
     # Return a list of all tickets for an individual project
     def self.find_all_by_project_id(project_id)
@@ -59,12 +65,15 @@ module Unfuzzle
     end
     
     # The Priority associated with this ticket
+=begin
     def priority
       Priority.new(priority_id)
     end
+=end
     
     def priority_name
-      priority.name
+      # priority.name
+      Priority.new(priority).name
     end
     
     # The Component associated with this ticket
@@ -82,6 +91,8 @@ module Unfuzzle
         'id'           => id,
         'project_id'   => project_id,
         'milestone_id' => milestone_id,
+        'priority'     => priority,
+        'severity_id'  => severity_id,
         'number'       => number,
         'summary'      => title,
         'description'  => description,
@@ -93,6 +104,12 @@ module Unfuzzle
     def update
       resource_path = "/projects/#{project_id}/tickets/#{id}"
       Request.put(resource_path, self.to_xml('ticket'))
+    end
+    
+    # Create a ticket in unfuddle
+    def create
+      resource_path = "/projects/#{project_id}/tickets"
+      Request.post(resource_path, self.to_xml('ticket'))
     end
 
   end

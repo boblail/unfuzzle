@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rake/gempackagetask'
 require 'rake/testtask'
 
-require 'lib/unfuzzle/version'
+require './lib/unfuzzle/version'
 
 task :default => :test
 

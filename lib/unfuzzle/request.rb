@@ -11,6 +11,12 @@ module Unfuzzle
       request = new(resource_path)
       request.get
     end
+
+    # Send a POST request with data and retrieve a Response
+    def self.post(resource_path, payload)
+      request = new(resource_path, payload)
+      request.post
+    end
     
     # Send a PUT request with data and retrieve a Response
     def self.put(resource_path, payload)
@@ -38,6 +44,15 @@ module Unfuzzle
       request.basic_auth Unfuzzle.username, Unfuzzle.password
       
       Response.new(client.request(request))
+    end
+
+    # Send a POST request to the configured endpoint
+    def post
+      request = Net::HTTP::Post.new(endpoint_uri.path)
+      request.basic_auth Unfuzzle.username, Unfuzzle.password
+      request.content_type = 'application/xml'
+
+      Response.new(client.request(request, @payload))
     end
 
     # Send a PUT request to the configured endpoint

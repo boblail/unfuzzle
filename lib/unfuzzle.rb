@@ -4,7 +4,7 @@ require 'uri'
 require 'net/http'
 require 'json'
 require 'builder'
-require 'graft'
+require 'graft/xml'
 
 require 'unfuzzle/request'
 require 'unfuzzle/response'

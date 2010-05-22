@@ -13,7 +13,7 @@ module Unfuzzle
   # 
   class Milestone
 
-    include Graft::Model
+    include Graft
 
     attribute :id, :type => :integer
     attribute :project_id, :from => 'project-id', :type => :integer
