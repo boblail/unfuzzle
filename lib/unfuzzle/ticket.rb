@@ -49,7 +49,14 @@ module Unfuzzle
       response = Request.get("/projects/#{project_id}/milestones/#{milestone_id}/tickets")
       collection_from(response.body, 'tickets/ticket')
     end
-
+    
+    # Return a list of all tickets for a given milestone as part of a project
+    def self.find_all_by_project_id_and_number(project_id, number)
+      response = Request.get("/projects/#{project_id}/tickets/by_number/#{number}")
+      # collection_from(response.body, 'tickets/ticket')
+      new(response.body)
+    end
+    
     # The Milestone associated with this ticket
     def milestone
       Milestone.find_by_project_id_and_milestone_id(project_id, milestone_id)
