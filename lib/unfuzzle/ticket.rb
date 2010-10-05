@@ -33,9 +33,9 @@ module Unfuzzle
     attribute :status
     
     def initialize(*args)
-      super(*args)
       self.priority = 3
       self.status = "new"
+      super(*args)
     end
 
     # Return a list of all tickets for an individual project
