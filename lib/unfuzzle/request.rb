@@ -31,11 +31,13 @@ module Unfuzzle
     end
     
     def endpoint_uri  # :nodoc:
-      URI.parse("http://#{Unfuzzle.subdomain}.unfuddle.com/api/v1#{@resource_path}.xml")
+      URI.parse("https://#{Unfuzzle.subdomain}.unfuddle.com/api/v1#{@resource_path}.xml")
     end
 
     def client # :nodoc:
-      Net::HTTP.new(endpoint_uri.host)
+      http = Net::HTTP.new(endpoint_uri.host, endpoint_uri.port)
+      http.use_ssl = true
+      http
     end
 
     # Retrieve a response from the current resource path    
