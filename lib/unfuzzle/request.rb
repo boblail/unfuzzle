@@ -36,7 +36,10 @@ module Unfuzzle
 
     def client # :nodoc:
       http = Net::HTTP.new(endpoint_uri.host, endpoint_uri.port)
-      http.use_ssl = true
+      if Unfuzzle.use_ssl
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
       http
     end
 

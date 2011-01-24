@@ -60,6 +60,11 @@ module Unfuzzle
     @password = password
   end
   
+  # Use SSL: yes or no
+  def self.use_ssl=(value)
+    @use_ssl = value
+  end
+  
   # Retrieve a project for the current user by its ID or slug
   def self.project(id_or_slug)
     id_or_slug.is_a?(String) ? Project.find_by_slug(id_or_slug) : Project.find_by_id(id_or_slug)
@@ -80,6 +85,10 @@ module Unfuzzle
   
   def self.password # :nodoc:
     @password
+  end
+  
+  def self.use_ssl # :nodoc:
+    @use_ssl
   end
   
 end
