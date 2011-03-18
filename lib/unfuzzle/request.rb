@@ -31,7 +31,9 @@ module Unfuzzle
     end
     
     def endpoint_uri  # :nodoc:
-      URI.parse("https://#{Unfuzzle.subdomain}.unfuddle.com/api/v1#{@resource_path}.xml")
+      full_path = "https://#{Unfuzzle.subdomain}.unfuddle.com/api/v1#{@resource_path}"
+      full_path << ".xml" unless full_path =~ /\.[\w0-9]/
+      URI.parse(full_path)
     end
 
     def client # :nodoc:
